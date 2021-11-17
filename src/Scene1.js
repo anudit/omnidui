@@ -26,7 +26,7 @@ function Title({ layers, ...props }) {
   return (
     <group {...props} ref={group}>
       <Text ref={textRef} name="text-omnid" depthTest={false} material-toneMapped={false} material-color="#FFFFFF" {...TEXT_PROPS}>
-
+        Omnid
       </Text>
     </group>
   )
