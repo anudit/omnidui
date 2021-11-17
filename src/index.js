@@ -2,9 +2,11 @@ import { render } from 'react-dom'
 import React, { Suspense } from 'react'
 import { Canvas } from 'react-three-fiber'
 import { useProgress, Html } from '@react-three/drei'
-import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { HashRouter as Router, Switch, Route, NavLink, Redirect } from 'react-router-dom'
 
 import Scene1 from './Scene1'
+import Scene2 from './Scene2'
+import Scene3 from './Scene3'
 
 import "./base.css"
 
@@ -24,6 +26,8 @@ function App(props) {
       <color attach="background" args={['#000']} />
       <Suspense fallback={<Loader />}>
         {scene === 1 && <Scene1 />}
+        {scene === 2 && <Scene2 />}
+        {scene === 3 && <Scene3 />}
       </Suspense>
       <ambientLight intensity={0.4} />
     </Canvas>
@@ -37,10 +41,16 @@ function Body() {
         <div className="content">
           <Switch>
             <Route exact path="/">
-              <Redirect to="/panna" />
+              <Redirect to="/omnid" />
             </Route>
-            <Route exact path="/panna">
+            <Route exact path="/omnid">
               <App scene={1} />
+            </Route>
+            <Route exact path="/olga">
+              <App scene={2} />
+            </Route>
+            <Route exact path="/pedro">
+              <App scene={3} />
             </Route>
           </Switch>
         </div>
