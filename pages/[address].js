@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Flex, FormControl, FormLabel, Switch, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Flex, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import GridLayout from "react-grid-layout";
-import { Convo } from '@theconvospace/sdk';
-import { isAddress } from 'ethers/lib/utils';
-import { DiscordIcon, YoutubeIcon } from '@/public/icons';
+import dynamic from 'next/dynamic'
+
+const DiscordBlock = dynamic(() => import('../components/blocks/Discord'))
+const TrustScoreBlock = dynamic(() => import('../components/blocks/TrustScore'))
+const YoutubeBlock = dynamic(() => import('../components/blocks/Youtube'))
+const EnsBlock = dynamic(() => import('../components/blocks/Ens'))
+const AppleBlock = dynamic(() => import('../components/blocks/Minimalist'))
 
 const IdentitySection = () => {
 
     const blocksToApp = {
-      "address": {
+      "ens": {
         "customProps": {
-          backgroundColor: "#346B6D",
+          backgroundColor: "#274192",
+          p: 0
         },
-        "component" : <AddressBlock />
+        "component" : <EnsBlock />
       },
       "trustscore": {
         "customProps": {
-          backgroundColor: "#274192",
+          backgroundColor: "#159947",
         },
         "component" : <TrustScoreBlock />
       },
@@ -26,21 +30,31 @@ const IdentitySection = () => {
           backgroundColor: "#C1000F",
           p: 0
         },
-        "component" : <VideoBlock />
+        "component" : <YoutubeBlock />
       },
       "discord": {
         "customProps": {
           backgroundColor: "#f0f",
         },
         "component" : <DiscordBlock />
+      },
+      "apple": {
+        "customProps": {
+          backgroundColor: "#000",
+          borderWidth: "1px",
+          borderColor: "#ffffffb8",
+          boxShadow: "0 0 17px #000, 0 0 9px #ffffff",
+        },
+        "component" : <AppleBlock />
       }
     };
 
     const [layout, setLayout] = useState([
-      { i: "address", x: 0, y: 0, w: 2, h: 8 },
+      { i: "ens", x: 0, y: 0, w: 2, h: 8 },
       { i: "trustscore", x: 2, y: 5, w: 3, h: 5, minW: 3, maxW: 3 },
       { i: "video", x: 2, y: 0, w: 3, h: 5, minW: 2, minH: 5 },
-      { i: "discord", x: 5, y: 0, w: 3, h: 5, minW: 2, minH: 5 }
+      { i: "discord", x: 5, y: 0, w: 3, h: 5, minW: 2, minH: 5 },
+      { i: "apple", x: 7, y: 0, w: 3, h: 5, minW: 2, minH: 4 }
     ]);
 
     const [locked, setLocked] = useState(false);
@@ -81,70 +95,6 @@ const IdentitySection = () => {
     )
 }
 export default IdentitySection;
-
-const AddressBlock = () => {
-
-  const router = useRouter();
-
-  return(
-    <>
-      <Text fontSize="x-large" fontWeight="500">Your Address</Text>
-      <Text fontSize="30px" fontWeight="100">{router?.query?.address}</Text>
-    </>
-  );
-}
-
-const TrustScoreBlock = () => {
-
-  const router = useRouter();
-  const [scoreData, setScoreData] = useState(null);
-  const convo = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
-
-  useEffect(()=>{
-    if (isAddress(router?.query?.address) === true){
-      convo.omnid.getTrustScore(router.query.address).then(setScoreData);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router])
-
-  return(
-    <>
-      <Text fontSize="xx-large" fontWeight="600">TrustScore</Text>
-      {
-        Boolean(scoreData) === true? (
-          <Text fontSize="100px" fontWeight="100">{scoreData?.score}</Text>
-        ) : (
-          <Text fontSize="100px" fontWeight="100">...</Text>
-        )
-      }
-    </>
-  );
-}
-
-const DiscordBlock = () => {
-
-  return(
-    <>
-      <Flex direction="row">
-        <DiscordIcon mr={2} width={6} height={6} />
-        <Text fontSize="large" fontWeight="600">Discord</Text>
-      </Flex>
-      <Text fontSize="30px" fontWeight="100">Anudit#0000</Text>
-    </>
-  );
-}
-
-const VideoBlock = () => {
-  return(
-    <>
-      <Flex direction="row" w="100%" justifyContent="center" my={1}>
-        <YoutubeIcon mr={2} width={6} height={6} />
-        <Text fontSize="large" fontWeight="600">Youtube</Text>
-      </Flex>
-      <iframe width="inherit" height="100%" src="https://www.youtube.com/embed/QH2-TGUlwu4" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-    </>
-  );
-}
 
 // const BlankBlock = () => {
 //   return (
