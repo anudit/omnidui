@@ -1,7 +1,7 @@
 import React, { useRef, useContext } from "react";
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Flex, Input, InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/react";
+import { Flex, Input, InputGroup, InputLeftElement, InputRightElement, Tooltip } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { OmnidIcon, WalletIcon } from "@/public/icons";
 import NavBar from "@/components/Navbar";
@@ -49,18 +49,29 @@ export default function Home() {
             <meta name="description" content="Omnid" />
             <link rel="icon" href="/favicon.ico" />
         </Head>
-        <NavBar />
         <Flex direction="column" p="200px" alignItems="center" h="100vh">
           <Flex direction="column" justifyContent="center" alignItems="center" w={{base:"100vw", md:"50vw"}}>
-            <OmnidIcon boxSize={48} />
+            <OmnidIcon boxSize={32} />
             <br/><br/>
             <InputGroup>
-              <InputLeftElement pointerEvents="none" >
-                <SearchIcon color="gray.300" mt="22px" ml="10px"/>
+              <InputLeftElement pointerEvents="none" mr={2}>
+                <SearchIcon color="gray.300" mt="12px" ml="20px"/>
               </InputLeftElement>
-              <Input ref={searchBox} autoFocus type="text" onKeyDown={handleKeyDown} placeholder="Ethereum Address" defaultValue="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"  py="30px" px="100px" borderRadius="100px"/>
-              <InputRightElement >
-                <WalletIcon color="gray.300" mt="22px" mr="10px" onClick={populateAddress} cursor="pointer"/>
+              <Input
+                ref={searchBox}
+                autoFocus
+                type="text"
+                onKeyDown={handleKeyDown}
+                placeholder="Search Omnid"
+                defaultValue="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+                py="25px"
+                pl="50px"
+                borderRadius="100px"
+              />
+              <InputRightElement ml={2}>
+                <Tooltip hasArrow label='Use from Wallet'  placement='left'>
+                  <WalletIcon color="gray.300" mt="12px" mr="20px" onClick={populateAddress} cursor="pointer"/>
+                </Tooltip>
               </InputRightElement>
             </InputGroup>
 

@@ -3,11 +3,11 @@ import { Flex, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import GridLayout from "react-grid-layout";
 import dynamic from 'next/dynamic'
 
-const DiscordBlock = dynamic(() => import('../components/blocks/Discord'))
-const TrustScoreBlock = dynamic(() => import('../components/blocks/TrustScore'))
-const YoutubeBlock = dynamic(() => import('../components/blocks/Youtube'))
-const EnsBlock = dynamic(() => import('../components/blocks/Ens'))
-const AppleBlock = dynamic(() => import('../components/blocks/Minimalist'))
+const DiscordBlock = dynamic(() => import('../../components/blocks/Discord'))
+const TrustScoreBlock = dynamic(() => import('../../components/blocks/TrustScore'))
+const YoutubeBlock = dynamic(() => import('../../components/blocks/Youtube'))
+const EnsBlock = dynamic(() => import('../../components/blocks/Ens'))
+const AppleBlock = dynamic(() => import('../../components/blocks/Minimalist'))
 
 const IdentitySection = () => {
 

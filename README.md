@@ -1,1 +1,1 @@
-# UI for Omnid
+# OmnidUI
