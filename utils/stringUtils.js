@@ -1,3 +1,5 @@
+import { getAddress } from "ethers/lib/utils";
+
 export const fromB64 = (b64) => {
 
     if (Boolean(b64) == false){
@@ -89,4 +91,62 @@ export const prettifyNumber = (num, digits=2) => {
       }
     }
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+}
+
+
+
+export async function addressToEns(address){
+
+    let data = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
+        "headers": {
+            "accept": "*/*",
+            "content-type": "application/json",
+        },
+        "referrer": "https://thegraph.com/",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "body": "{\"query\":\"{\\sn  domains (where: {resolvedAddress: \\\""+address.toLowerCase()+"\\\"}){\\n    name\\n  }\\n}\\n\",\"variables\":null}",
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "omit"
+    });
+
+    let resp = await data.json();
+    if (resp['data']['domains'].length === 0){
+        return false;
+    }
+    else {
+        let finalDomain = false;
+        for (let index = 0; index < resp['data']['domains'].length; index++) {
+            const domain = resp['data']['domains'][index];
+            if (domain.name.split('.').length == 2){
+                finalDomain = domain.name;
+            }
+        }
+        return finalDomain;
+    }
+
+}
+
+export async function ensToAddress(ensAddress){
+    try {
+
+        let resp = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
+            "headers": {
+                "accept": "*/*",
+                "content-type": "application/json",
+            },
+            "body": "{\"query\":\"{\\n  domains(where:{name:\\\""+ensAddress+"\\\"}) {\\n    resolvedAddress {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
+            "method": "POST",
+        }).then((r)=>{return r.json()});
+
+        if (Boolean(resp['data']["domains"][0]["resolvedAddress"]) === false){
+            return false;
+        }
+        else {
+            return getAddress(resp['data']["domains"][0]["resolvedAddress"]['id'])
+        }
+
+    } catch (error) {
+        return false;
+    }
 }

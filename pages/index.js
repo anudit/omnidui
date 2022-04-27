@@ -8,6 +8,7 @@ import NavBar from "@/components/Navbar";
 import { Web3Context } from "@/contexts/Web3Context";
 import { isAddress } from "ethers/lib/utils";
 import { ethers } from "ethers";
+import { ensToAddress } from "@/utils/stringUtils";
 
 export default function Home() {
 
@@ -27,8 +28,7 @@ export default function Home() {
       const val = searchBox.current.value;
       if (isAddress(val) === true) router.push(`/${val}`)
       else if (String(val).endsWith('.eth') === true) {
-        let tp = new ethers.providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");
-        let ensAddress = await tp.resolveName(val);
+        let ensAddress = await ensToAddress(val);
         if (isAddress(ensAddress) === true) router.push(`/${ensAddress}`)
         else alert('Invalid')
       }
